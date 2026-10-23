@@ -28,6 +28,7 @@ import {
   usePendingOrders,
 } from '@/queries/orders'
 import { useSession } from '@/queries/session'
+import { IMAGE_SIZES, responsiveImage } from '@/lib/images'
 
 export const Route = createFileRoute('/_auth/checkout')({
   component: CheckoutPage,
@@ -302,7 +303,7 @@ function CheckoutPage() {
                   className="flex items-center gap-3 bg-card p-1 pr-4"
                 >
                   <img
-                    src={line.imageUrl}
+                    {...responsiveImage(line.imageUrl, IMAGE_SIZES.list)}
                     alt=""
                     width={64}
                     height={64}

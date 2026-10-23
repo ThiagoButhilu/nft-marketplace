@@ -42,7 +42,7 @@ function NftDetailPage() {
   useEffect(() => {
     if (query.data) document.title = `${query.data.name} · Kurio`
     return () => {
-      document.title = 'NFT Marketplace · Kurio'
+      document.title = 'Kurio · Marketplace de NFTs'
     }
   }, [query.data])
 

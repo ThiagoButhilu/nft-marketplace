@@ -1,5 +1,6 @@
 import axios, { type AxiosRequestConfig } from 'axios'
 import type { z } from 'zod'
+import { networkReady } from '@/lib/network-ready'
 import { sessionStore } from '@/lib/session-store'
 import { CART_ID_HEADER } from './contracts'
 import { ApiError, toApiError } from './errors'
@@ -19,7 +20,10 @@ export const http = axios.create({
   headers: { 'Content-Type': 'application/json' },
 })
 
-http.interceptors.request.use((config) => {
+http.interceptors.request.use(async (config) => {
+  // Held until the mock backend intercepts (see lib/network-ready); the
+  // axios timeout only starts once the request is actually sent.
+  await networkReady
   const token = sessionStore.getToken()
   if (token) config.headers.set('Authorization', `Bearer ${token}`)
   else config.headers.set(CART_ID_HEADER, sessionStore.getCartId())

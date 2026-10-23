@@ -9,6 +9,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { cn } from '@/lib/utils'
+import { IMAGE_SIZES, responsiveImage } from '@/lib/images'
 
 /** Desktop gallery: vertical thumbnails + main image with zoom dialog. */
 export function Gallery({ nft }: { nft: NftDetail }) {
@@ -33,7 +34,7 @@ export function Gallery({ nft }: { nft: NftDetail }) {
               )}
             >
               <img
-                src={item.url}
+                {...responsiveImage(item.url, IMAGE_SIZES.thumb)}
                 alt=""
                 width={90}
                 height={90}

@@ -4,6 +4,7 @@ import type { NftSummary } from '@/api/contracts'
 import { formatEth } from '@/lib/eth'
 import { cn } from '@/lib/utils'
 import { useFavoriteToggle } from '@/components/nft/use-favorite-toggle'
+import { IMAGE_SIZES, responsiveImage } from '@/lib/images'
 
 interface NftCardProps {
   nft: NftSummary
@@ -28,12 +29,13 @@ export function NftCard({ nft, priority = false, className }: NftCardProps) {
           className="block"
         >
           <img
-            src={nft.imageUrl}
+            {...responsiveImage(nft.imageUrl, IMAGE_SIZES.card)}
             alt=""
             width={400}
             height={400}
             loading={priority ? 'eager' : 'lazy'}
-            decoding="async"
+            fetchPriority={priority ? 'high' : 'low'}
+            decoding={priority ? undefined : 'async'}
             className={cn(
               'aspect-square w-full rounded-[14px] object-cover transition-transform duration-300 group-hover:scale-[1.02]',
               nft.soldOut && 'opacity-60 grayscale-[40%]',

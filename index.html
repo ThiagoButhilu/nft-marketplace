@@ -3,11 +3,28 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NFT Marketplace</title>
-    <meta name="description" content="Discover, collect and buy NFTs." />
+    <title>Kurio · Marketplace de NFTs</title>
+    <meta
+      name="description"
+      content="Descubra, colecione e compre NFTs selecionados de criadores emergentes e consagrados na Kurio."
+    />
+    <meta name="theme-color" content="#140d0a" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <style>
+      /* App shell: painted with the HTML (no CSS or JS needed) while the
+         bundles download; React replaces it when it mounts. It is a fixed
+         overlay, so removing it moves nothing (no layout shift). */
+      html { background: #140d0a; }
+      #app-shell {
+        position: fixed; inset: 0; display: grid; place-items: center;
+        background: #140d0a; color: #f7f3ec;
+        font: 700 22px/1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: 0.12em;
+      }
+      #app-shell span { display: block; margin-top: 14px; font-size: 12px; font-weight: 400; letter-spacing: 0; color: #cfb28c; }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root"><div id="app-shell" role="status"><p>KURIO<span>Carregando o marketplace…</span></p></div></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

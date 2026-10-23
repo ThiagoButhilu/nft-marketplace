@@ -19,8 +19,9 @@ test.describe('Catálogo: busca, filtros, ordenação, paginação e URL', () =>
       .poll(() => app.catalogNames())
       .toEqual(['Golden Beat #207', 'Golden Frequency #071'])
 
-    await page.getByRole('combobox', { name: /Ordenar por/ }).click()
-    await page.getByRole('option', { name: 'Menor preço' }).click()
+    await page
+      .getByRole('combobox', { name: /Ordenar por/ })
+      .selectOption({ label: 'Menor preço' })
     await expect(page).toHaveURL(/sort=price-asc/)
     if (isMobile) await page.keyboard.press('Escape')
     await expect
@@ -129,9 +130,11 @@ test.describe('Catálogo: busca, filtros, ordenação, paginação e URL', () =>
   test('parâmetros inválidos na URL são ignorados', async ({ app, page }) => {
     await app.open('/?page=abc&sort=zzz&collection=%5B%22nope%22%5D')
     await expect.poll(() => app.catalogNames()).toHaveLength(9)
-    await expect(
-      page.getByRole('combobox', { name: /Ordenar por/ }),
-    ).toContainText('Listados recentemente')
+    const sort = page.getByRole('combobox', { name: /Ordenar por/ })
+    await expect(sort).toHaveValue('recent')
+    await expect(sort.locator('option:checked')).toHaveText(
+      'Listados recentemente',
+    )
   })
 })
 

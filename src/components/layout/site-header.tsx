@@ -1,21 +1,16 @@
-import { Link, useLocation, useNavigate } from '@tanstack/react-router'
+import { Link, useLocation } from '@tanstack/react-router'
 import { LogIn, Search, ShoppingCart } from 'lucide-react'
-import { useId, useState, type FormEvent } from 'react'
+import { Suspense, lazy, useRef, useState } from 'react'
 import { cn } from '@/lib/utils'
 import { useCart } from '@/queries/cart'
 import { useSession } from '@/queries/session'
 import { Button } from '@/components/ui/button'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
 import { UserAvatar } from '@/components/common/user-avatar'
 import { RealtimeIndicator } from './realtime-indicator'
+
+const SearchDialogContent = lazy(() =>
+  import('./search-dialog').then((m) => ({ default: m.SearchDialogContent })),
+)
 
 type Section = 'inicio' | 'mercado' | null
 
@@ -145,56 +140,42 @@ export function SiteHeader({
   )
 }
 
+/**
+ * The search button renders immediately; the dialog (Radix focus trap,
+ * scroll lock...) is loaded on first use, off the critical path.
+ */
 function SearchDialog() {
   const [open, setOpen] = useState(false)
-  const [term, setTerm] = useState('')
-  const navigate = useNavigate()
-  const inputId = useId()
-
-  const submit = (event: FormEvent) => {
-    event.preventDefault()
-    setOpen(false)
-    void navigate({
-      to: '/',
-      search: { q: term.trim() || undefined },
-      hash: 'catalogo',
-    })
-  }
-
+  const [requested, setRequested] = useState(false)
+  const triggerRef = useRef<HTMLButtonElement>(null)
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon"
-          aria-label="Buscar NFTs"
-          className="max-md:hidden"
-        >
-          <Search className="size-6" aria-hidden />
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="border-line bg-card sm:max-w-lg">
-        <DialogHeader>
-          <DialogTitle>Buscar NFTs</DialogTitle>
-          <DialogDescription>
-            Procure por nome, token, coleção ou rede.
-          </DialogDescription>
-        </DialogHeader>
-        <form onSubmit={submit} role="search" className="flex gap-2">
-          <label htmlFor={inputId} className="sr-only">
-            Termo de busca
-          </label>
-          <Input
-            id={inputId}
-            type="search"
-            value={term}
-            onChange={(e) => setTerm(e.target.value)}
-            placeholder="Ex.: Emerald Ape"
-            autoComplete="off"
+    <>
+      <Button
+        ref={triggerRef}
+        variant="ghost"
+        size="icon"
+        aria-label="Buscar NFTs"
+        aria-haspopup="dialog"
+        aria-expanded={open}
+        className="max-md:hidden"
+        onClick={() => {
+          setRequested(true)
+          setOpen(true)
+        }}
+        onMouseEnter={() => setRequested(true)}
+        onFocus={() => setRequested(true)}
+      >
+        <Search className="size-6" aria-hidden />
+      </Button>
+      {requested && (
+        <Suspense fallback={null}>
+          <SearchDialogContent
+            open={open}
+            onOpenChange={setOpen}
+            returnFocusTo={triggerRef}
           />
-          <Button type="submit">Buscar</Button>
-        </form>
-      </DialogContent>
-    </Dialog>
+        </Suspense>
+      )}
+    </>
   )
 }

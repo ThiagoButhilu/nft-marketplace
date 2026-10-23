@@ -227,7 +227,7 @@ function HomePage() {
                 >
                   {data.items.map((nft, index) => (
                     <li key={nft.id} className="max-md:even:mt-8">
-                      <NftCard nft={nft} priority={index < 3} />
+                      <NftCard nft={nft} priority={index < 2} />
                     </li>
                   ))}
                 </ul>

@@ -7,6 +7,7 @@ import { editionLabel } from '@/components/nft/editions'
 import { Button } from '@/components/ui/button'
 import { formatEth } from '@/lib/eth'
 import { formatOrderDate } from './format'
+import { IMAGE_SIZES, responsiveImage } from '@/lib/images'
 
 const EXPLORER_NAMES: Record<Network, string> = {
   ethereum: 'Etherscan',
@@ -142,7 +143,7 @@ export function Receipt({ order }: { order: Order }) {
                 <td className="py-2">
                   <div className="flex items-center gap-3">
                     <img
-                      src={line.imageUrl}
+                      {...responsiveImage(line.imageUrl, IMAGE_SIZES.list)}
                       alt=""
                       width={64}
                       height={64}

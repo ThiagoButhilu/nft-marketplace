@@ -1,6 +1,7 @@
 import { Link } from '@tanstack/react-router'
 import { ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { IMAGE_SIZES, responsiveImage } from '@/lib/images'
 
 /** Static editorial blocks from the home frame (promos and blog teasers). */
 export function PromoSection() {
@@ -39,11 +40,12 @@ function PromoCard({
   return (
     <article className="grid grid-cols-[minmax(0,45%)_1fr] overflow-hidden rounded-sm bg-card">
       <img
-        src={image}
+        {...responsiveImage(image, IMAGE_SIZES.card)}
         alt=""
         width={240}
         height={250}
         loading="lazy"
+        fetchPriority="low"
         className="h-full min-h-48 w-full object-cover"
       />
       <div className="flex flex-col items-end justify-center gap-3 p-4 text-right sm:p-6">
@@ -92,7 +94,10 @@ const POSTS = [
 
 export function BlogSection() {
   return (
-    <section aria-labelledby="blog-title" className="page-container mt-24">
+    <section
+      aria-labelledby="blog-title"
+      className="page-container mt-24"
+    >
       <h2 id="blog-title" className="text-center text-heading font-bold">
         Diário da Cunhagem
       </h2>
@@ -110,11 +115,12 @@ export function BlogSection() {
           >
             <article className="h-full bg-card">
               <img
-                src={post.image}
+                {...responsiveImage(post.image, IMAGE_SIZES.card)}
                 alt=""
                 width={280}
                 height={200}
                 loading="lazy"
+                fetchPriority="low"
                 className="aspect-[280/200] w-full object-cover"
               />
               <div className="p-4">

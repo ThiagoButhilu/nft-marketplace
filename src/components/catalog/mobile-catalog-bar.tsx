@@ -1,16 +1,19 @@
 import { Search, SlidersHorizontal } from 'lucide-react'
-import { useId, type ReactNode } from 'react'
 import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from '@/components/ui/sheet'
-import { Button } from '@/components/ui/button'
+  Suspense,
+  cloneElement,
+  lazy,
+  useId,
+  useRef,
+  useState,
+  type ComponentProps,
+  type ReactElement,
+  type ReactNode,
+} from 'react'
+
+const FiltersSheetContent = lazy(() =>
+  import('./filters-sheet').then((m) => ({ default: m.FiltersSheetContent })),
+)
 
 /** Mobile search field + filters drawer (focus is trapped while open). */
 export function MobileCatalogBar({
@@ -78,40 +81,47 @@ export function MobileCatalogBar({
   )
 }
 
-/** Filters drawer, shared by mobile and tablet. */
+/**
+ * Filters drawer, shared by mobile and tablet. The trigger renders
+ * immediately; the drawer (Radix focus trap, scroll lock...) is loaded on
+ * first intent, off the critical path.
+ */
 export function FiltersSheet({
   trigger,
   total,
   filters,
 }: {
-  trigger: ReactNode
+  trigger: ReactElement<ComponentProps<'button'>>
   total: number | undefined
   filters: ReactNode
 }) {
+  const [open, setOpen] = useState(false)
+  const [requested, setRequested] = useState(false)
+  const triggerRef = useRef<HTMLButtonElement>(null)
   return (
-    <Sheet>
-      <SheetTrigger asChild>{trigger}</SheetTrigger>
-      <SheetContent
-        side="bottom"
-        className="max-h-[85dvh] overflow-y-auto rounded-t-[26px] border-line bg-card md:mx-auto md:max-w-xl"
-      >
-        <SheetHeader>
-          <SheetTitle>Filtrar e ordenar</SheetTitle>
-          <SheetDescription>
-            As mudanças são aplicadas imediatamente.
-          </SheetDescription>
-        </SheetHeader>
-        <div className="px-4">{filters}</div>
-        <SheetFooter>
-          <SheetClose asChild>
-            <Button>
-              {total === undefined
-                ? 'Ver resultados'
-                : `Ver ${total} resultado${total === 1 ? '' : 's'}`}
-            </Button>
-          </SheetClose>
-        </SheetFooter>
-      </SheetContent>
-    </Sheet>
+    <>
+      {cloneElement(trigger, {
+        ref: triggerRef,
+        'aria-haspopup': 'dialog',
+        'aria-expanded': open,
+        onClick: () => {
+          setRequested(true)
+          setOpen(true)
+        },
+        onPointerEnter: () => setRequested(true),
+        onFocus: () => setRequested(true),
+      })}
+      {requested && (
+        <Suspense fallback={null}>
+          <FiltersSheetContent
+            open={open}
+            onOpenChange={setOpen}
+            returnFocusTo={triggerRef}
+            total={total}
+            filters={filters}
+          />
+        </Suspense>
+      )}
+    </>
   )
 }

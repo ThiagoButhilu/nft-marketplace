@@ -7,11 +7,18 @@ import {
 } from '@tanstack/react-router'
 import { SessionGuard } from '@/components/auth/session-guard'
 import { MobileTabBar } from '@/components/layout/mobile-tab-bar'
-import { NoticeCenter } from '@/components/layout/notice-center'
 import { SiteFooter } from '@/components/layout/site-footer'
 import { SiteHeader } from '@/components/layout/site-header'
 import { Button } from '@/components/ui/button'
 import { useSessionValidation } from '@/queries/session'
+import { Suspense, lazy } from 'react'
+
+// Toasts are not needed for the first paint: load them off the critical path.
+const NoticeCenter = lazy(() =>
+  import('@/components/layout/notice-center').then((m) => ({
+    default: m.NoticeCenter,
+  })),
+)
 
 export interface RouterContext {
   queryClient: QueryClient
@@ -41,13 +48,21 @@ function RootLayout() {
         Pular para o conteúdo
       </a>
       <SiteHeader hideOnMobile={isHome || isDetail || isAuth} />
-      <main id="conteudo" tabIndex={-1} className="flex-1 outline-none">
+      {/* At least one screen tall: the footer never sits mid-screen while
+          content loads, so it is not pushed down later (layout shift). */}
+      <main
+        id="conteudo"
+        tabIndex={-1}
+        className="min-h-dvh flex-1 outline-none"
+      >
         <Outlet />
       </main>
       <SiteFooter />
       {!isDetail && !isAuth && <MobileTabBar />}
       <SessionGuard />
-      <NoticeCenter />
+      <Suspense fallback={null}>
+        <NoticeCenter />
+      </Suspense>
     </div>
   )
 }

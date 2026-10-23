@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { formatEth } from '@/lib/eth'
 import { cn } from '@/lib/utils'
 import { featuredQuery } from '@/queries/catalog'
+import { IMAGE_SIZES, responsiveImage } from '@/lib/images'
 
 /** Slide selector. Manual only (no autoplay), so nothing moves unexpectedly. */
 function Dots({
@@ -79,13 +80,16 @@ export function DesktopHero() {
           >
             <a href="#catalogo">Explorar</a>
           </Button>
-          {data && (
+          {/* Same height reserved while loading: no layout shift when dots arrive. */}
+          {data ? (
             <Dots
               items={data.hero}
               current={current}
               onSelect={setCurrent}
               className="mt-10 justify-center"
             />
+          ) : (
+            <div aria-hidden className="mt-10 h-6" />
           )}
         </div>
 
@@ -158,7 +162,7 @@ export function MobileHero() {
               aria-label={`Ver ${slide.name}`}
             >
               <img
-                src={slide.imageUrl}
+                {...responsiveImage(slide.imageUrl, IMAGE_SIZES.mobileHero)}
                 alt={slide.imageAlt}
                 width={138}
                 height={138}
@@ -174,7 +178,7 @@ export function MobileHero() {
           )}
           {secondary && secondary.id !== slide?.id && (
             <img
-              src={secondary.imageUrl}
+              {...responsiveImage(secondary.imageUrl, IMAGE_SIZES.list)}
               alt=""
               width={60}
               height={60}
@@ -183,13 +187,15 @@ export function MobileHero() {
           )}
         </div>
       </div>
-      {data && (
+      {data ? (
         <Dots
           items={data.hero}
           current={current}
           onSelect={setCurrent}
           className="mt-1 justify-center"
         />
+      ) : (
+        <div aria-hidden className="mt-1 h-6" />
       )}
     </section>
   )

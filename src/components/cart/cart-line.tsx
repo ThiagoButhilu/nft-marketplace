@@ -9,6 +9,7 @@ import { formatEth } from '@/lib/eth'
 import { notices } from '@/lib/notices'
 import { cn } from '@/lib/utils'
 import { useRemoveCartItem, useUpdateCartItem } from '@/queries/cart'
+import { IMAGE_SIZES, responsiveImage } from '@/lib/images'
 
 const QUANTITY_DEBOUNCE_MS = 400
 
@@ -99,7 +100,7 @@ export function CartLineRow({
     >
       <div className="flex min-w-0 items-center gap-4 max-md:contents">
         <img
-          src={line.imageUrl}
+          {...responsiveImage(line.imageUrl, IMAGE_SIZES.list)}
           alt=""
           width={70}
           height={70}

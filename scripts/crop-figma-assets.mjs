@@ -12,11 +12,20 @@ const crops = {
   'sage-nomad': { source: catalog, left: 790, top: 1509, width: 230, height: 230 },
 }
 
+// 400px for detail/hero, 200px for cards, thumbnails and lists (srcset).
+const SIZES = [
+  { width: 400, suffix: '' },
+  { width: 200, suffix: '-200' },
+]
+
 for (const [name, { source, ...box }] of Object.entries(crops)) {
-  await sharp(source)
-    .extract(box)
-    .resize(400, 400, { fit: 'cover', kernel: 'lanczos3' })
-    .webp({ quality: 82 })
-    .toFile(`public/nfts/${name}.webp`)
-  console.log(`public/nfts/${name}.webp`)
+  for (const { width, suffix } of SIZES) {
+    const file = `public/nfts/${name}${suffix}.webp`
+    await sharp(source)
+      .extract(box)
+      .resize(width, width, { fit: 'cover', kernel: 'lanczos3' })
+      .webp({ quality: 82 })
+      .toFile(file)
+    console.log(file)
+  }
 }
