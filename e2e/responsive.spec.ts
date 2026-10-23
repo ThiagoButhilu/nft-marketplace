@@ -29,7 +29,12 @@ test.describe('Responsividade', () => {
       }
       await app.loginViaApi('ana')
       await app.addToCart([['ivory-baron-088', '1-50', 9]])
-      for (const path of ['/checkout', '/account/profile']) {
+      for (const path of [
+        '/checkout',
+        '/account/profile',
+        '/account/wallets',
+        '/account/favorites',
+      ]) {
         await app.goto(path)
         await page.waitForTimeout(600)
         const overflow = await page.evaluate(

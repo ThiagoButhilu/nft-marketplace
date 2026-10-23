@@ -117,4 +117,24 @@ test.describe('Varredura automática (axe-core)', () => {
       ),
     ).toEqual([])
   })
+
+  for (const path of ['/account/profile', '/account/wallets']) {
+    test(`${path} sem violações graves`, async ({ app, page }) => {
+      await app.open('/')
+      await app.loginViaApi('bruno')
+      await app.goto(path)
+      await page.waitForTimeout(600)
+      const results = await new AxeBuilder({ page })
+        .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
+        .analyze()
+      const serious = results.violations.filter(
+        (v) => v.impact === 'serious' || v.impact === 'critical',
+      )
+      expect(
+        serious.map(
+          (v) => `${v.id}: ${v.nodes.length}× ${v.nodes[0]?.target.join(' ')}`,
+        ),
+      ).toEqual([])
+    })
+  }
 })
