@@ -13,7 +13,9 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:update": "playwright test --update-snapshots",
-    "lighthouse": "lhci autorun"
+    "lighthouse": "npm run build && npm run lighthouse:mobile && npm run lighthouse:desktop && node scripts/lighthouse-summary.mjs --render",
+    "lighthouse:mobile": "lhci collect --config=lighthouse/lighthouserc.mobile.json && lhci assert --config=lighthouse/lighthouserc.mobile.json; node scripts/lighthouse-summary.mjs mobile",
+    "lighthouse:desktop": "lhci collect --config=lighthouse/lighthouserc.desktop.json && lhci assert --config=lighthouse/lighthouserc.desktop.json; node scripts/lighthouse-summary.mjs desktop"
   },
   "dependencies": {
     "@fontsource-variable/roboto-mono": "^5.3.0",

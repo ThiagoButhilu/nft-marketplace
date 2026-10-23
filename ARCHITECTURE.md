@@ -335,3 +335,29 @@ and failing tests keep a trace (`npx playwright show-trace …`).
     desktop windows;
   - invalid `<dl>` structure in the summary;
   - the accessible name of the account link didn't contain its visible text.
+
+## Performance (Lighthouse)
+
+`npm run lighthouse` builds, serves with `vite preview` and audits Início and NFT detail on
+mobile and desktop, 3 runs each (median). Configuration, per-run HTML/JSON reports, medians
+and the analysis live in [`lighthouse/`](lighthouse/README.md).
+
+- **Result.** Accessibility, Best Practices and SEO are 100 on every run. Desktop
+  Performance is 100. Mobile Performance is 88 (Início) and 90 (detail), varying 88–91
+  between runs.
+- **Below target: Início mobile, 88.** LCP is ~3.5 s: the first card image can only render
+  after the main bundle (174 KB gzip) runs under 4× CPU throttling, the in-browser mock
+  backend starts and the API answers with its simulated 120–450 ms latency. Prerendering
+  the first catalog page or a real edge-cached API would close the gap. Lowering the mock
+  latency for the audit would not, so it was not done. Details and LCP phases are in
+  `lighthouse/README.md`.
+- **What moved the numbers.**
+  - Mock boot from its own entry in `<head>`, so the service worker registers while the app
+    downloads.
+  - Inline app shell with a non-blocking stylesheet.
+  - `tough-cookie` stubbed out of MSW (mock chunk 114 → 58 KB gzip).
+  - Native sort `<select>` instead of Radix Select (main bundle 202 → 174 KB gzip).
+  - Search dialog, filters drawer and notice center lazy-loaded on first intent, with focus
+    returned to their triggers.
+  - Responsive `srcset` images with `fetchpriority`.
+  - `min-h-dvh` on `main` and size-stable placeholders, for CLS 0.
