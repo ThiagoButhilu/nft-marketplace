@@ -168,17 +168,29 @@ Logue como Ana com itens no carrinho e vá em **Conectar e finalizar**.
 | 8.4 | Durante a desconexão (`setScenario('offline')`), mudar um preço e voltar ao `default` | Ao reconectar, o preço novo aparece (reconciliação via REST) | [ ] |
 | 8.5 | `setScenario('live-market')` com item no carrinho | A cada 20s o preço muda e o carrinho avisa | [ ] |
 
-## 9. Perfil e carteiras
+## 9. Perfil, carteiras e lista de interesse
 
-> Telas em desenvolvimento. Os casos serão adicionados quando estiverem prontas.
+Logue como **Bruno** (`bruno@kurio.test` / `Colecao2026`): ele não tem ENS nem carteira secundária.
 
 | # | Passos | Esperado | OK |
 | --- | --- | --- | --- |
-| 9.1 | Editar nome, usuário e e-mail; F5 | Alterações persistem | [ ] |
-| 9.2 | Usuário/e-mail de outro usuário | Erro de conflito no campo | [ ] |
-| 9.3 | Avatar: enviar e remover | Aparece no header; some ao remover | [ ] |
-| 9.4 | Senha atual errada / nova senha fraca | Erros nos campos | [ ] |
-| 9.5 | Cadastrar e editar carteira principal e secundária | Validação de endereço 0x; aparecem no checkout | [ ] |
+| 9.1 | `/account/profile`: mudar o nome de exibição, preencher o ENS, **Salvar** e dar F5 | Alterações persistem; o header mostra o novo nome | [ ] |
+| 9.2 | **Salvar** sem alterar nada | Aviso “Nenhuma alteração para salvar” | [ ] |
+| 9.3 | E-mail `ana@kurio.test` / usuário `ana.lima` | Conflito no campo: “Este e-mail já está cadastrado.” / “Este nome de usuário já está em uso.” | [ ] |
+| 9.4 | Avatar: enviar um PNG pequeno | Aparece no perfil e no header | [ ] |
+| 9.5 | Avatar: arquivo acima de 512 KB ou `.txt` | Erro abaixo do campo, nada enviado | [ ] |
+| 9.6 | **Remover** o avatar | Volta o ícone padrão | [ ] |
+| 9.7 | Senha: nova senha `fraca` | “Mínimo de 8 caracteres…” | [ ] |
+| 9.8 | Senha atual errada + nova válida | “Senha atual incorreta.” no campo e aviso “Dados salvos; a senha não foi alterada” | [ ] |
+| 9.9 | Senha atual correta + nova válida; sair e entrar com a nova | Login funciona com a nova senha | [ ] |
+| 9.10 | `/account/wallets`: endereço `0x123` | “Endereço 0x inválido (40 caracteres hexadecimais)” | [ ] |
+| 9.11 | Corrigir o endereço, preencher o ENS, trocar a rede e salvar; F5 | Alterações persistem | [ ] |
+| 9.12 | Secundária: marcar **Igual à carteira principal** | Formulário preenchido com os dados da principal, menos o endereço | [ ] |
+| 9.13 | Usar o mesmo endereço da principal e salvar | “Este endereço já está em outra carteira sua.” (409 da API) | [ ] |
+| 9.14 | Endereço diferente e salvar; abrir o checkout | As duas carteiras aparecem em “Carteira e rede” | [ ] |
+| 9.15 | `setScenario('forbidden')` e abrir o perfil | “Você não tem permissão para acessar estes dados” | [ ] |
+| 9.16 | `/account/favorites` como Ana / como Bruno | Ana: Emerald Ape e Ivory Baron; Bruno: estado vazio | [ ] |
+| 9.17 | Em 390px | Menu da conta vira abas roláveis; formulários em uma coluna | [ ] |
 
 ## 10. Acessibilidade e responsividade
 

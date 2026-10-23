@@ -268,6 +268,20 @@ query, because the mock ignores the `auth` payload; it also sends `auth` for a r
     background refresh keeps the last known status instead of replacing it with an error.
   - Focus moves to the new heading when the status settles.
 
+- **Account (profile, wallets, favorites).**
+  - The account menu follows the Figma. Items outside the scope (Atividade, Ofertas, Arquivos
+    baixados, Suporte) lead to `/em-breve`. Below 1024px the menu becomes scrollable tabs.
+  - Profile: one "Salvar", as in the layout. Password fields form an optional group that is
+    validated only when touched. The profile and password requests are independent, so a failed
+    password change after a saved profile reports exactly that.
+  - API conflicts land on their fields. "Nome ENS" is required, as marked in the Figma.
+  - Avatar: type (PNG/JPEG/WebP) and size (≤ 512 KB) are checked before upload, and the API
+    validates again. The header avatar refreshes through session revalidation.
+  - Wallets: primary and secondary use the same form. "Igual à carteira principal" copies the
+    profile data but not the address; the mock rejects a duplicate address with `409 CONFLICT`
+    on `fieldErrors.address`. Payment only uses registered wallets.
+  - "Lista de interesse" (not in the Figma) lists favorites with the catalog card.
+
 ## E2E tests (Playwright)
 
 `npm run test:e2e` builds the demo bundle (mocks enabled) and runs the suite against
@@ -304,6 +318,9 @@ and failing tests keep a trace (`npx playwright show-trace …`).
   - `realtime.spec.ts`: `nft.updated` in the catalog, duplicate and stale events,
     price change during checkout, foreign `order.updated`, disconnection + refresh with a
     pending order, reconciliation of changes missed while offline.
+  - `account.spec.ts`: profile edit and persistence, client validation and API conflicts,
+    avatar upload/removal/validation, password change (wrong current, weak, success), 403,
+    primary/secondary wallets with address conflict, favorites list.
   - `accessibility.spec.ts`: skip link, keyboard filters with visible focus, dialog focus
     trap and Escape, drawer focus return, keyboard purchase, and an axe-core scan (WCAG 2.1 AA,
     no serious or critical violations) on home, detail, cart, login, "em breve" and checkout.
