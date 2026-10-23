@@ -1,0 +1,18 @@
+import { createRouter } from '@tanstack/react-router'
+import { routeTree } from './routeTree.gen'
+import { queryClient } from './lib/query-client'
+
+export const router = createRouter({
+  routeTree,
+  context: { queryClient },
+  defaultPreload: 'intent',
+  // Loaders delegate caching to TanStack Query.
+  defaultPreloadStaleTime: 0,
+  scrollRestoration: true,
+})
+
+declare module '@tanstack/react-router' {
+  interface Register {
+    router: typeof router
+  }
+}
