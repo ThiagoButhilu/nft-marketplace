@@ -1,0 +1,6 @@
+/* Applied only while taking visual baselines: fixed overlays would be
+   painted mid-page in full-page captures, and toasts are timing-dependent. */
+nav[aria-label='Navegação móvel'],
+section[aria-label^='Notificações'] {
+  visibility: hidden !important;
+}
