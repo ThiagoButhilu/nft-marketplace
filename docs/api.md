@@ -129,7 +129,7 @@ Select one with `?scenario=<name>`. The name and any overrides passed to `setSce
 | Scenario | Behaviour |
 | --- | --- |
 | `default` | Happy path, 120–450 ms latency |
-| `fast` | No latency (tests, Lighthouse) |
+| `fast` | No latency |
 | `slow` / `variable-latency` | 1.5–3 s / 50 ms–2.5 s |
 | `out-of-order` | Shorter searches answer later (responses arrive out of order) |
 | `empty` | Empty catalog |
@@ -148,8 +148,8 @@ Select one with `?scenario=<name>`. The name and any overrides passed to `setSce
 
 ### Control API (`window.__kurioMock`)
 
-Exposed once the worker is intercepting. Playwright and the dev panel use it to drive the
-**server side**; the app still only sees REST responses and Socket.IO events.
+Exposed once the worker is intercepting. Playwright (or the browser console) uses it to drive
+the **server side**; the app still only sees REST responses and Socket.IO events.
 
 `reset()`, `setScenario(name, overrides?)`, `getScenario()`, `expireSessions(userId?)`,
 `updateNft(id, { price?, compareAtPrice?, editions? })` (publishes `nft.updated`),

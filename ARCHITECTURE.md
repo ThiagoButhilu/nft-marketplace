@@ -1,8 +1,9 @@
 # Architecture
 
-> Work in progress: UI, testing and auditing sections are added as those layers land.
-> Contracts, events and mock scenarios are documented in [docs/api.md](docs/api.md); the
-> Figma mapping in [docs/design-map.md](docs/design-map.md).
+> Setup, credentials and commands are in the [README](README.md). Contracts, events and mock
+> scenarios are documented in [docs/api.md](docs/api.md); the Figma mapping in
+> [docs/design-map.md](docs/design-map.md); Lighthouse results in
+> [lighthouse/README.md](lighthouse/README.md).
 
 ## Layers
 

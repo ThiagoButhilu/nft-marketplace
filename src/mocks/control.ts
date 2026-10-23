@@ -20,7 +20,7 @@ import { store } from './server/store'
 
 /**
  * Control surface of the mock server, exposed as `window.__kurioMock`.
- * Used by Playwright and the dev scenario panel to drive the *server* side;
+ * Used by Playwright (or the browser console) to drive the *server* side;
  * everything still reaches the app through REST (MSW) and Socket.IO.
  */
 export function createMockControl() {
