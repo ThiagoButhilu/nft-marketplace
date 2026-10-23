@@ -259,6 +259,29 @@ export function getWallet(userId: string, walletId: string) {
   return wallet
 }
 
+/** The same address cannot back two wallets of one account. */
+function assertUniqueAddress(
+  userId: string,
+  address: string,
+  exceptWalletId?: string,
+) {
+  const taken = listWallets(userId).some(
+    (w) =>
+      w.id !== exceptWalletId &&
+      w.address.toLowerCase() === address.toLowerCase(),
+  )
+  if (taken) {
+    throw new MockApiError(
+      409,
+      'CONFLICT',
+      'Este endereço já está em outra carteira sua.',
+      {
+        address: ['Este endereço já está em outra carteira sua.'],
+      },
+    )
+  }
+}
+
 export function createWallet(userId: string, input: WalletInput) {
   if (listWallets(userId).some((w) => w.role === input.role)) {
     const label = input.role === 'primary' ? 'principal' : 'secundária'
@@ -268,6 +291,7 @@ export function createWallet(userId: string, input: WalletInput) {
       `Você já tem uma carteira ${label}. Edite a existente.`,
     )
   }
+  assertUniqueAddress(userId, input.address)
   const wallet: Wallet = {
     ...input,
     id: store.nextId('wal'),
@@ -295,6 +319,7 @@ export function updateWallet(
       'Já existe uma carteira com esse papel.',
     )
   }
+  assertUniqueAddress(userId, input.address, walletId)
   const updated: Wallet = {
     ...current,
     ...input,
