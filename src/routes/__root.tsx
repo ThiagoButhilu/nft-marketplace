@@ -20,6 +20,16 @@ const NoticeCenter = lazy(() =>
   })),
 )
 
+// Vercel Web Analytics: cookieless page views, also on client-side navigation.
+// Its own chunk, off the critical path, and only in builds made on Vercel.
+const VercelAnalytics = __VERCEL_ANALYTICS__
+  ? lazy(() =>
+      import('@vercel/analytics/react').then((m) => ({
+        default: m.Analytics,
+      })),
+    )
+  : null
+
 export interface RouterContext {
   queryClient: QueryClient
 }
@@ -62,6 +72,7 @@ function RootLayout() {
       <SessionGuard />
       <Suspense fallback={null}>
         <NoticeCenter />
+        {VercelAnalytics && <VercelAnalytics />}
       </Suspense>
     </div>
   )

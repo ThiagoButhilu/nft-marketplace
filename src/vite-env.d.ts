@@ -9,3 +9,6 @@ interface ImportMetaEnv {
 interface ImportMeta {
   readonly env: ImportMetaEnv
 }
+
+/** True only in builds made on Vercel (see vite.config.ts). */
+declare const __VERCEL_ANALYTICS__: boolean

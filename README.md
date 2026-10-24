@@ -22,7 +22,7 @@ componentes. Ele fala com a "API" por HTTP e WebSocket como falaria com um servi
 React 19 · TypeScript 5.9 (strict) · Vite 6 · TanStack Router (rotas por arquivo, code
 splitting) · TanStack Query 5 · Axios + Zod (validação das respostas) · Socket.IO client 4 ·
 Tailwind CSS 4 + shadcn/ui (Radix) · React Hook Form · big.js (valores em ETH) · MSW 2 ·
-Playwright + axe-core · Lighthouse CI.
+Playwright + axe-core · Lighthouse CI · Vercel Web Analytics.
 
 ## Setup
 
@@ -173,6 +173,12 @@ trace, que pode ser aberto com `npx playwright show-trace <arquivo>`.
 URL pública: _(adicionar após o deploy)_
 
 O deploy foi feito na Vercel de maneira publica, sem enfatizar logs e protocolos de CI. 
+
+O [Vercel Web Analytics](https://vercel.com/docs/analytics) (`@vercel/analytics`) conta as
+visualizações de página, inclusive na navegação entre rotas, sem cookies. Ele só entra no build
+feito na Vercel (`VERCEL=1`), num chunk carregado depois da primeira pintura. Localmente, nos
+E2E e no Lighthouse o código é removido, porque `/_vercel/insights` só existe lá. Para ver os
+dados, ative Web Analytics no painel do projeto na Vercel.
 
 ## Estrutura
 

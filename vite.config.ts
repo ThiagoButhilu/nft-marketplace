@@ -69,6 +69,11 @@ export default defineConfig({
     mockBootEntry(),
     nonBlockingStylesheet(),
   ],
+  define: {
+    // Vercel sets VERCEL=1 in its builds, the only place /_vercel/insights
+    // exists. Local, E2E and Lighthouse builds compile analytics out.
+    __VERCEL_ANALYTICS__: JSON.stringify(process.env.VERCEL === '1'),
+  },
   build: {
     rollupOptions: {
       input: {
