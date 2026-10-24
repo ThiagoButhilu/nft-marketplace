@@ -87,8 +87,11 @@ chega pelo evento `order.updated` do Socket.IO.
 
 Escolha um cenário pela URL com `?scenario=<nome>`, por exemplo
 http://localhost:5173/?scenario=slow. O cenário fica salvo no `localStorage` e sobrevive a
-recarregamentos. Para voltar ao normal, use `?scenario=default`. Para apagar todos os dados
-(contas, carrinhos, pedidos) e voltar às fixtures, use `?mock-reset`.
+recarregamentos. Para voltar ao normal, use `?scenario=default`.
+
+`?mock-reset` faz o reset completo: apaga os dados criados (contas, carrinhos, pedidos,
+favoritos), restaura as fixtures e volta ao cenário `default`. Para resetar já num cenário,
+combine os dois: `/?mock-reset&scenario=slow`.
 
 | Cenário | Comportamento |
 | --- | --- |
@@ -115,6 +118,35 @@ exemplo, `__kurioMock.updateNft('sage-nomad-009', { price: '2.5' })` publica um 
 e `__kurioMock.expireSessions()` invalida as sessões. A lista completa está em
 [docs/api.md](docs/api.md#control-api-window__kuriomock).
 
+## Reproduzindo os fluxos de falha
+
+Comece cada fluxo com `/?mock-reset` para voltar às fixtures. Quando o fluxo pede login, use
+a conta da Ana. O roteiro completo, com cada caso e o resultado esperado, está em
+[docs/manual-test-plan.md](docs/manual-test-plan.md).
+
+| Fluxo | Como reproduzir | Esperado |
+| --- | --- | --- |
+| Carregamento lento | `/?scenario=slow` | Skeletons com shimmer no catálogo, no detalhe e no resumo do carrinho |
+| Respostas fora de ordem | `/?scenario=out-of-order` e digite uma busca rápido | A lista mostra o resultado do último termo, nunca o de uma resposta atrasada |
+| Catálogo vazio | `/?scenario=empty` | "Nenhum NFT encontrado" (com "Limpar filtros" quando há filtros ativos) |
+| Falha transitória (500) | `/?scenario=catalog-error` | Nenhum erro na tela: as duas falhas são repetidas automaticamente e o catálogo carrega |
+| Serviço indisponível (503) | `/?scenario=catalog-unavailable` | "Não foi possível carregar o catálogo" com "Tentar novamente". Rode `__kurioMock.setScenario('default')` e clique para recuperar |
+| Sem conexão | `/?scenario=offline` | Erro de rede nas telas e indicador "Reconectando…" / "Sem atualizações ao vivo" no header. Volte com `?scenario=default` para ver a reconexão |
+| NFT inexistente | `/nft/nao-existe` | Página "NFT não encontrado" |
+| Edição indisponível / esgotado | `/nft/emerald-ape-042` / `/nft/golden-signal-160` | "Edição indisponível" e compra bloqueada |
+| Favorito com falha | Login, `?scenario=favorite-error` e favorite um NFT | O coração volta ao estado anterior e aparece um aviso de erro |
+| Cupom inválido ou expirado | Carrinho com um item, cupom `ERRADO` ou `VERAO2025` | "Código promocional inválido." / "Este código promocional expirou." no campo, sem desconto no resumo |
+| Conflito de cadastro | Cadastro com `ana@kurio.test` | Erro no campo de e-mail retornado pela API |
+| Sessão expirada | Login, `?scenario=session-expired` e espere 20 s (ou `__kurioMock.expireSessions()`) | Aviso de sessão expirada e login com retorno à tela anterior. No checkout, o formulário é preservado |
+| Acesso negado | Login, `?scenario=forbidden` e abra `/account/profile` | Erro 403 sem mostrar dados |
+| Preço alterado durante a compra | `?scenario=price-change` e confirme a compra; ou, com o checkout aberto, rode `__kurioMock.updateNft('<id do item>', { price: '9.99' })` | "Os valores do pedido mudaram" com o total antigo e o novo; só segue depois de "Aceitar novos preços" e de confirmar de novo |
+| Edição esgotada no envio | `?scenario=sold-out` e confirme a compra | "Algum item ficou indisponível", com orientação para ajustar o carrinho |
+| Carteira recusada ou desconectada | `?scenario=wallet-rejected` e conecte a carteira; ou conecte e clique em "Desconectar" | "A carteira recusou a conexão" com "Tentar de novo"; ao desconectar, a compra volta a exigir conexão |
+| Pagamento recusado | `?scenario=payment-declined` e confirme a compra | "Pagamento recusado", sem recibo, e os itens continuam no carrinho |
+| Timeout após criar o pedido | `?scenario=order-timeout` e confirme a compra | Recupera o mesmo pedido pela chave de idempotência, sem criar outro |
+| Queda de conexão com pedido pendente | Confirme a compra, rode `__kurioMock.dropConnections()` ou recarregue a página | O pedido pendente é retomado e chega à confirmação sem duplicar |
+| Evento duplicado | Depois de um `updateNft`, rode `__kurioMock.replayEvent()` | Nada muda: o evento repetido é ignorado |
+
 ## Comandos
 
 | Comando | O que faz |
@@ -136,6 +168,17 @@ trace, que pode ser aberto com `npx playwright show-trace <arquivo>`.
 > As baselines visuais (`e2e/visual.spec.ts-snapshots/*-darwin.png`) foram geradas no macOS.
 > Em outro sistema, rode `npm run test:e2e:update` uma vez antes de comparar.
 
+## Deploy
+
+URL pública: _(adicionar após o deploy)_
+
+O build é estático e leva o mock backend junto (`VITE_ENABLE_MOCKS=true` em
+`.env.production`), então não precisa de servidor nem de variáveis no painel da hospedagem.
+O [`vercel.json`](vercel.json) define o build (`npm run build` → `dist/`), reescreve qualquer
+rota para o `index.html`, para que o acesso direto e o refresh de `/nft/...`, `/orders/...` e
+das outras rotas funcionem, e aplica cache imutável aos arquivos com hash em `/assets/`.
+Netlify e Cloudflare Pages precisam da regra equivalente (`/* /index.html 200`).
+
 ## Estrutura
 
 ```
@@ -154,7 +197,7 @@ docs/           API, mapa do design e plano de teste manual
 
 ## Resultados
 
-- **E2E:** 105 testes nos projetos desktop e mobile, cobrindo os fluxos principais, os
+- **E2E:** 107 testes nos projetos desktop e mobile, cobrindo os fluxos principais, os
   cenários de falha, o tempo real, a acessibilidade (axe, WCAG 2.1 AA), o layout responsivo e
   a regressão visual.
   A cobertura por arquivo está no [ARCHITECTURE.md](ARCHITECTURE.md#e2e-tests-playwright).

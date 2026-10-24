@@ -35,8 +35,8 @@ Medianas da última execução completa. O detalhe está em [`summary.md`](summa
 
 | Página | Perfil | Perf. | A11y | BP | SEO | LCP | CLS | TBT |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Início | mobile | **88** ⚠️ | 100 | 100 | 100 | 3,5 s | 0 | 13 ms |
-| Detalhe do NFT | mobile | 90 | 100 | 100 | 100 | 3,5 s | 0 | 83 ms |
+| Início | mobile | **88** ⚠️ | 100 | 100 | 100 | 3,5 s | 0 | 10 ms |
+| Detalhe do NFT | mobile | 90 | 100 | 100 | 100 | 3,5 s | 0 | 52 ms |
 | Início | desktop | 100 | 100 | 100 | 100 | 0,7 s | 0 | 0 ms |
 | Detalhe do NFT | desktop | 100 | 100 | 100 | 100 | 0,7 s | 0,004 | 0 ms |
 
@@ -118,7 +118,7 @@ O que daria os ~0,5 s restantes, e por que não foi feito aqui:
 
 ### Variação entre execuções
 
-A nota mobile oscila entre **88 e 91** entre execuções, e a causa é o FCP: ele vai de ~1,3–1,5 s
+A nota mobile oscila entre **86 e 92** entre execuções, e a causa é o FCP: ele vai de ~1,3–1,6 s
 a ~2,3–2,4 s com o mesmo build (veja os relatórios em `reports/mobile/`). O lantern simula o
 FCP a partir de um grafo de dependências. Localmente, o bundle principal às vezes termina de
 executar antes do app shell ser pintado. Nesses casos ele entra como dependência do FCP, e a

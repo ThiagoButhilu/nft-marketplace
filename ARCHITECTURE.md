@@ -29,6 +29,11 @@ validates **every** response (`request(schema, config)`). A contract mismatch be
 for failures without a usable response: `NETWORK_ERROR`, `TIMEOUT`, `INVALID_RESPONSE` and
 `CANCELED`.
 
+The same request schemas validate the forms (via `zodResolver`) and the mock server, which
+returns their issues as `fieldErrors`. So every user-facing rule carries its own pt-BR message
+(e.g. `Máximo de 16 caracteres`). `common.ts` also sets Zod's `ptBR` locale as a fallback, so
+a rule without a message never shows Zod's English default.
+
 ## Cache policy
 
 | Data | Key | staleTime | Notes |
@@ -344,7 +349,7 @@ mobile and desktop, 3 runs each (median). Configuration, per-run HTML/JSON repor
 and the analysis live in [`lighthouse/`](lighthouse/README.md).
 
 - **Result.** Accessibility, Best Practices and SEO are 100 on every run. Desktop
-  Performance is 100. Mobile Performance is 88 (Início) and 90 (detail), varying 88–91
+  Performance is 100. Mobile Performance is 88 (Início) and 90 (detail), varying 86–92
   between runs.
 - **Below target: Início mobile, 88.** LCP is ~3.5 s: the first card image can only render
   after the main bundle (174 KB gzip) runs under 4× CPU throttling, the in-browser mock

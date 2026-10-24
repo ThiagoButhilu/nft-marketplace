@@ -6,13 +6,14 @@ Marque `[x]` em cada caso aprovado e anote o que divergir.
 ## Preparação
 
 1. `npm install` e depois `npm run dev`. O app abre em <http://localhost:5173>.
-2. Use o **Google Chrome**. O painel de navegador embutido do app Claude não registra service
-   workers, então o MSW não funciona nele.
+2. Use um navegador recente (Chrome, Edge ou Firefox) numa janela comum. O MSW depende de
+   service worker: navegadores embutidos ou modos que bloqueiam service workers não carregam
+   os mocks.
 3. Abra o DevTools (F12). Você vai usar:
    - **Console**: comandos `__kurioMock` (lista abaixo);
    - **Device toolbar** (Ctrl/Cmd + Shift + M): larguras **390**, **768** e **1440**;
    - **Application → Local Storage**: inspecionar `kurio.*`.
-4. **Estado limpo** antes de cada bloco: acesse `/?mock-reset`, que restaura os dados iniciais.
+4. **Estado limpo** antes de cada bloco: acesse `/?mock-reset`, que restaura os dados iniciais e o cenário `default`.
 5. **Cenário**: acesse `/?scenario=<nome>` ou rode `__kurioMock.setScenario('<nome>')` no console.
    Volte com `__kurioMock.setScenario('default')`.
 

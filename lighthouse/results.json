@@ -10,34 +10,34 @@
       },
       "perRun": [
         {
-          "performance": 88,
-          "accessibility": 100,
-          "best-practices": 100,
-          "seo": 100
-        },
-        {
-          "performance": 90,
+          "performance": 86,
           "accessibility": 100,
           "best-practices": 100,
           "seo": 100
         },
         {
           "performance": 88,
+          "accessibility": 100,
+          "best-practices": 100,
+          "seo": 100
+        },
+        {
+          "performance": 91,
           "accessibility": 100,
           "best-practices": 100,
           "seo": 100
         }
       ],
       "metrics": {
-        "lcp": 3532.18575,
+        "lcp": 3527.90335,
         "cls": 0,
-        "tbt": 13,
-        "fcp": 2264.3639000000003,
-        "si": 2264.3639000000003
+        "tbt": 10,
+        "fcp": 2413.2689,
+        "si": 2413.2689
       },
       "lighthouseVersion": "12.6.1",
       "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
-      "benchmarkIndex": 3009.5,
+      "benchmarkIndex": 2979,
       "throttling": {
         "rttMs": 150,
         "throughputKbps": 1638.4,
@@ -64,28 +64,28 @@
           "seo": 100
         },
         {
-          "performance": 91,
+          "performance": 90,
           "accessibility": 100,
           "best-practices": 100,
           "seo": 100
         },
         {
-          "performance": 90,
+          "performance": 92,
           "accessibility": 100,
           "best-practices": 100,
           "seo": 100
         }
       ],
       "metrics": {
-        "lcp": 3499.2191999999995,
+        "lcp": 3506.680200000001,
         "cls": 0,
-        "tbt": 82.50000000000045,
-        "fcp": 1359.4689,
-        "si": 1359.4689
+        "tbt": 52,
+        "fcp": 1552.5212499999998,
+        "si": 1552.5212499999998
       },
       "lighthouseVersion": "12.6.1",
       "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
-      "benchmarkIndex": 2996.5,
+      "benchmarkIndex": 3013,
       "throttling": {
         "rttMs": 150,
         "throughputKbps": 1638.4,
@@ -98,7 +98,7 @@
     }
   },
   "environment": {
-    "date": "2026-10-23T19:25:41.482Z",
+    "date": "2026-10-23T23:56:29.581Z",
     "node": "v24.2.0",
     "os": "Darwin 27.0.0 (arm64)",
     "cpu": "Apple M1",
@@ -134,15 +134,15 @@
         }
       ],
       "metrics": {
-        "lcp": 736.7837,
-        "cls": 0.0001928356945641997,
+        "lcp": 716.7067999999999,
+        "cls": 0.0001885742637830896,
         "tbt": 0,
-        "fcp": 342.2372,
-        "si": 448.87587322197726
+        "fcp": 371.26725,
+        "si": 485.29201379022504
       },
       "lighthouseVersion": "12.6.1",
       "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
-      "benchmarkIndex": 2987.5,
+      "benchmarkIndex": 2939.5,
       "throttling": {
         "rttMs": 40,
         "throughputKbps": 10240,
@@ -182,15 +182,15 @@
         }
       ],
       "metrics": {
-        "lcp": 710.94475,
-        "cls": 0.003908597399318267,
+        "lcp": 719.2072499999999,
+        "cls": 0.003822222222222223,
         "tbt": 0,
-        "fcp": 526.6567,
-        "si": 526.6567
+        "fcp": 492.0829,
+        "si": 492.0829
       },
       "lighthouseVersion": "12.6.1",
       "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
-      "benchmarkIndex": 2990,
+      "benchmarkIndex": 2985.5,
       "throttling": {
         "rttMs": 40,
         "throughputKbps": 10240,

@@ -123,8 +123,8 @@ strike-through price).
 
 ### Scenarios
 
-Select one with `?scenario=<name>`. The name and any overrides passed to `setScenario(name, overrides)` are remembered in `localStorage`, so a configured scenario survives reloads. Reset the data with
-`?mock-reset`. Latency jitter comes from a seeded generator, so runs are reproducible.
+Select one with `?scenario=<name>`. The name and any overrides passed to `setScenario(name, overrides)` are remembered in `localStorage`, so a configured scenario survives reloads. `?mock-reset` restores the seeded
+data and the `default` scenario (or the one given in the same URL: `?mock-reset&scenario=slow`). Latency jitter comes from a seeded generator, so runs are reproducible.
 
 | Scenario | Behaviour |
 | --- | --- |
