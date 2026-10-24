@@ -18,7 +18,10 @@ export async function startMocks() {
 
   const url = new URL(window.location.href)
   if (url.searchParams.has('mock-reset')) {
+    // A full reset: seeded data and the default scenario, unless the same URL
+    // picks one (`?mock-reset&scenario=slow`).
     await store.reset()
+    if (!url.searchParams.has('scenario')) scenario.set('default')
     url.searchParams.delete('mock-reset')
     window.history.replaceState(window.history.state, '', url)
   }

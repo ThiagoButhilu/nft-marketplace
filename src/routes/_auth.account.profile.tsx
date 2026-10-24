@@ -28,7 +28,11 @@ export const Route = createFileRoute('/_auth/account/profile')({
 
 const ProfileForm = z
   .object({
-    displayName: z.string().trim().min(2, 'Informe o nome de exibição').max(48),
+    displayName: z
+      .string()
+      .trim()
+      .min(2, 'Informe o nome de exibição')
+      .max(48, 'Máximo de 48 caracteres'),
     username: Username,
     email: Email,
     ensName: z
@@ -39,7 +43,7 @@ const ProfileForm = z
       .string()
       .trim()
       .min(2, 'Informe o apelido da carteira')
-      .max(32),
+      .max(32, 'Máximo de 32 caracteres'),
     currentPassword: z.string(),
     newPassword: z.string(),
     confirmPassword: z.string(),

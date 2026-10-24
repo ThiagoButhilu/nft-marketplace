@@ -15,7 +15,11 @@ export const Profile = z.object({
 export type Profile = z.infer<typeof Profile>
 
 export const UpdateProfileRequest = z.object({
-  displayName: z.string().trim().min(2, 'Informe o nome de exibição').max(48),
+  displayName: z
+    .string()
+    .trim()
+    .min(2, 'Informe o nome de exibição')
+    .max(48, 'Máximo de 48 caracteres'),
   username: Username,
   email: Email,
   ensName: z
@@ -23,7 +27,11 @@ export const UpdateProfileRequest = z.object({
     .trim()
     .regex(/^[a-z0-9-]{3,}$/i, 'Use letras, números ou hífen (mín. 3)')
     .nullable(),
-  walletNickname: z.string().trim().min(2, 'Informe o apelido').max(32),
+  walletNickname: z
+    .string()
+    .trim()
+    .min(2, 'Informe o apelido')
+    .max(32, 'Máximo de 32 caracteres'),
 })
 export type UpdateProfileRequest = z.infer<typeof UpdateProfileRequest>
 
@@ -83,9 +91,21 @@ export const WalletInput = z.object({
   role: WalletRole,
   provider: WalletProvider,
   network: Network,
-  label: z.string().trim().min(2, 'Informe o apelido da carteira').max(32),
-  displayName: z.string().trim().min(2, 'Informe o nome de exibição').max(48),
-  profileName: z.string().trim().min(2, 'Informe o nome do perfil').max(48),
+  label: z
+    .string()
+    .trim()
+    .min(2, 'Informe o apelido da carteira')
+    .max(32, 'Máximo de 32 caracteres'),
+  displayName: z
+    .string()
+    .trim()
+    .min(2, 'Informe o nome de exibição')
+    .max(48, 'Máximo de 48 caracteres'),
+  profileName: z
+    .string()
+    .trim()
+    .min(2, 'Informe o nome do perfil')
+    .max(48, 'Máximo de 48 caracteres'),
   address: EvmAddress,
   secondaryAddress: z
     .string()
@@ -105,7 +125,7 @@ export const WalletInput = z.object({
     .string()
     .trim()
     .min(4, 'Informe o código de indicação')
-    .max(16),
+    .max(16, 'Máximo de 16 caracteres'),
 })
 export type WalletInput = z.infer<typeof WalletInput>
 

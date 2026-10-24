@@ -20,7 +20,12 @@ export function CatalogTabs({
 }) {
   const active = search.tab ?? 'all'
   return (
-    <nav aria-label="Categorias do catálogo" className={className}>
+    // min-w-0/max-w-full: as a flex item the nav would grow to its content;
+    // capped, the list scrolls instead of widening the page (320px / 400% zoom).
+    <nav
+      aria-label="Categorias do catálogo"
+      className={cn('max-w-full min-w-0', className)}
+    >
       <ul className="flex gap-4 overflow-x-auto whitespace-nowrap md:gap-5">
         {NftTab.options.map((tab) => (
           <li key={tab}>

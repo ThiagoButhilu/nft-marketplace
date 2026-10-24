@@ -1,12 +1,17 @@
 import { z } from 'zod'
 
+// Safety net: any rule without an explicit message (client forms and the mock
+// server's fieldErrors share these schemas) falls back to Portuguese, never
+// to Zod's English defaults. User-facing rules still set their own message.
+z.config(z.locales.ptBR())
+
 /**
  * ETH amounts travel as decimal strings (never JS numbers) to keep precision.
  * Up to 18 fractional digits, matching wei precision.
  */
 export const EthAmount = z
   .string()
-  .regex(/^\d+(\.\d{1,18})?$/, 'Expected a non-negative decimal string')
+  .regex(/^\d+(\.\d{1,18})?$/, 'Valor em ETH inválido')
 export type EthAmount = z.infer<typeof EthAmount>
 
 export const IsoDateTime = z.iso.datetime({ offset: true })

@@ -12,10 +12,22 @@ const oneOf = (options: readonly string[], message: string) =>
 
 /** Form values are plain strings; empty optional fields become null on submit. */
 export const WalletFormSchema = z.object({
-  displayName: z.string().trim().min(2, 'Informe o nome de exibição').max(48),
-  label: z.string().trim().min(2, 'Informe o apelido da carteira').max(32),
+  displayName: z
+    .string()
+    .trim()
+    .min(2, 'Informe o nome de exibição')
+    .max(48, 'Máximo de 48 caracteres'),
+  label: z
+    .string()
+    .trim()
+    .min(2, 'Informe o apelido da carteira')
+    .max(32, 'Máximo de 32 caracteres'),
   network: oneOf(Network.options, 'Selecione uma rede'),
-  profileName: z.string().trim().min(2, 'Informe o nome do perfil').max(48),
+  profileName: z
+    .string()
+    .trim()
+    .min(2, 'Informe o nome do perfil')
+    .max(48, 'Máximo de 48 caracteres'),
   address: EvmAddress,
   secondaryAddress: z
     .string()
@@ -29,7 +41,7 @@ export const WalletFormSchema = z.object({
     .string()
     .trim()
     .min(4, 'Informe o código de indicação')
-    .max(16),
+    .max(16, 'Máximo de 16 caracteres'),
   email: Email,
   ensName: z
     .string()

@@ -12,9 +12,21 @@ export const TERMINAL_ORDER_STATUSES: ReadonlyArray<OrderStatus> = [
 ]
 
 export const CollectorDetails = z.object({
-  displayName: z.string().trim().min(2, 'Informe o nome de exibição').max(48),
-  username: z.string().trim().min(3, 'Informe o nome de usuário').max(24),
-  profileName: z.string().trim().min(2, 'Informe o nome do perfil').max(48),
+  displayName: z
+    .string()
+    .trim()
+    .min(2, 'Informe o nome de exibição')
+    .max(48, 'Máximo de 48 caracteres'),
+  username: z
+    .string()
+    .trim()
+    .min(3, 'Informe o nome de usuário')
+    .max(24, 'Máximo de 24 caracteres'),
+  profileName: z
+    .string()
+    .trim()
+    .min(2, 'Informe o nome do perfil')
+    .max(48, 'Máximo de 48 caracteres'),
   email: Email,
   ensName: z
     .string()
@@ -24,8 +36,8 @@ export const CollectorDetails = z.object({
     .string()
     .trim()
     .min(4, 'Informe o código de indicação')
-    .max(16),
-  note: z.string().trim().max(280).optional(),
+    .max(16, 'Máximo de 16 caracteres'),
+  note: z.string().trim().max(280, 'Máximo de 280 caracteres').optional(),
 })
 export type CollectorDetails = z.infer<typeof CollectorDetails>
 

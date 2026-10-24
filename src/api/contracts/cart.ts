@@ -50,6 +50,10 @@ export const UpdateCartItemRequest = z.object({
 export type UpdateCartItemRequest = z.infer<typeof UpdateCartItemRequest>
 
 export const ApplyCouponRequest = z.object({
-  code: z.string().trim().min(1, 'Informe um código').max(32),
+  code: z
+    .string()
+    .trim()
+    .min(1, 'Informe um código')
+    .max(32, 'Máximo de 32 caracteres'),
 })
 export type ApplyCouponRequest = z.infer<typeof ApplyCouponRequest>

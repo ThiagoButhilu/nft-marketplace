@@ -7,7 +7,7 @@ export const PASSWORD_RULES =
 export const Password = z
   .string()
   .min(8, PASSWORD_RULES)
-  .max(72)
+  .max(72, 'Máximo de 72 caracteres')
   .regex(/[a-z]/, PASSWORD_RULES)
   .regex(/[A-Z]/, PASSWORD_RULES)
   .regex(/\d/, PASSWORD_RULES)
