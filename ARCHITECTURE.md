@@ -174,10 +174,11 @@ query, because the mock ignores the `auth` payload; it also sends `auth` for a r
     social login and password recovery.
   - The newsletter answers with an explicit "indisponível" notice.
   - Social links open the networks in a new tab.
-- **Hero carousel.** Manual dots only, without autoplay, for accessibility. The slides come
-  from `/nfts/featured`.
-- **Mobile.** The 2-column grid is staggered as in the frame. The blog becomes a horizontal
-  snap carousel. The footer stacks.
+- **Hero carousel.** Changed by the dots or by a touch swipe (`useSwipe`), never by
+  autoplay, for accessibility. The slides come from `/nfts/featured`.
+- **Mobile.** The 2-column grid keeps both columns aligned. The frame staggers the second
+  column, but aligned rows read better side by side. The blog becomes a horizontal snap
+  carousel. The footer stacks.
 - **Assets.** The NFT artwork is cropped from the Figma frame screenshots
   (`scripts/crop-figma-assets.mjs`) until the original exports are available.
 - **NFT detail.**

@@ -192,7 +192,7 @@ docs/           API, mapa do design e plano de teste manual
 
 ## Resultados
 
-- **E2E:** 107 testes nos projetos desktop e mobile, cobrindo os fluxos principais, os
+- **E2E:** 108 testes nos projetos desktop e mobile, cobrindo os fluxos principais, os
   cenários de falha, o tempo real, a acessibilidade (axe, WCAG 2.1 AA), o layout responsivo e
   a regressão visual.
   A cobertura por arquivo está no [ARCHITECTURE.md](ARCHITECTURE.md#e2e-tests-playwright).
