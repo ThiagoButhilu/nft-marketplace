@@ -7,7 +7,17 @@ import { Button } from '@/components/ui/button'
 import { formatEth } from '@/lib/eth'
 import { cn } from '@/lib/utils'
 import { featuredQuery } from '@/queries/catalog'
+import { useSwipe } from '@/hooks/use-swipe'
 import { IMAGE_SIZES, responsiveImage } from '@/lib/images'
+
+/** Current slide, changed by the dots or by a touch swipe (wrapping around). */
+function useSlides(count: number) {
+  const [current, setCurrent] = useState(0)
+  const swipe = useSwipe((direction) => {
+    if (count > 1) setCurrent((index) => (index + direction + count) % count)
+  })
+  return { current, setCurrent, swipe }
+}
 
 /** Slide selector. Manual only (no autoplay), so nothing moves unexpectedly. */
 function Dots({
@@ -50,7 +60,7 @@ function Dots({
 
 export function DesktopHero() {
   const { data } = useQuery(featuredQuery())
-  const [current, setCurrent] = useState(0)
+  const { current, setCurrent, swipe } = useSlides(data?.hero.length ?? 0)
   const slide = data?.hero[current]
 
   return (
@@ -93,7 +103,7 @@ export function DesktopHero() {
           )}
         </div>
 
-        <div className="relative aspect-square w-full">
+        <div {...swipe} className="relative aspect-square w-full touch-pan-y">
           {slide ? (
             <Link
               to="/nft/$nftId"
@@ -126,14 +136,15 @@ export function DesktopHero() {
 
 export function MobileHero() {
   const { data } = useQuery(featuredQuery())
-  const [current, setCurrent] = useState(0)
+  const { current, setCurrent, swipe } = useSlides(data?.hero.length ?? 0)
   const slide = data?.hero[current]
   const secondary = data?.hero[(current + 1) % (data?.hero.length || 1)]
 
   return (
     <section
+      {...swipe}
       aria-labelledby="mobile-hero-title"
-      className="relative overflow-hidden rounded-[26px] bg-gradient-to-br from-surface-card via-surface-dark/80 to-surface-card p-4 md:hidden"
+      className="relative touch-pan-y overflow-hidden rounded-[26px] bg-gradient-to-br from-surface-card via-surface-dark/80 to-surface-card p-4 md:hidden"
     >
       <div className="grid grid-cols-[1fr_auto] gap-3">
         <div>
