@@ -172,12 +172,7 @@ trace, que pode ser aberto com `npx playwright show-trace <arquivo>`.
 
 URL pública: _(adicionar após o deploy)_
 
-O build é estático e leva o mock backend junto (`VITE_ENABLE_MOCKS=true` em
-`.env.production`), então não precisa de servidor nem de variáveis no painel da hospedagem.
-O [`vercel.json`](vercel.json) define o build (`npm run build` → `dist/`), reescreve qualquer
-rota para o `index.html`, para que o acesso direto e o refresh de `/nft/...`, `/orders/...` e
-das outras rotas funcionem, e aplica cache imutável aos arquivos com hash em `/assets/`.
-Netlify e Cloudflare Pages precisam da regra equivalente (`/* /index.html 200`).
+O deploy foi feito na Vercel de maneira publica, sem enfatizar logs e protocolos de CI. 
 
 ## Estrutura
 
