@@ -50,6 +50,14 @@ test.describe('Compra completa', () => {
     await expect(
       page.getByRole('link', { name: /Ver no Etherscan/ }),
     ).toHaveAttribute('href', /etherscan\.io\/tx\/0x/)
+    // The receipt has no dedicated mobile frame: it must still fit (390px).
+    expect(
+      await page.evaluate(
+        () =>
+          document.documentElement.scrollWidth -
+          document.documentElement.clientWidth,
+      ),
+    ).toBe(0)
 
     const cart = await app.api<{ lines: unknown[] }>('/cart')
     expect(cart.lines).toHaveLength(0)

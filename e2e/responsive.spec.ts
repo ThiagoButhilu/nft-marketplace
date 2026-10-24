@@ -1,7 +1,10 @@
 import { expect, test } from './fixtures'
 
-/** No horizontal overflow at the widths the challenge requires (390/768/1440). */
-const WIDTHS = [390, 768, 1440]
+/**
+ * No horizontal overflow at the widths the challenge requires (390/768/1440)
+ * and at 320px, which is 1280px at 400% zoom (WCAG 1.4.10 reflow).
+ */
+const WIDTHS = [320, 390, 768, 1440]
 const PUBLIC_PAGES = [
   '/',
   '/nft/emerald-ape-042',

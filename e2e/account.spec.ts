@@ -195,7 +195,11 @@ test.describe('Carteiras', () => {
       '0x1234567890aBcdEF1234567890abCDef12345678',
     )
 
+    const referral = primary.getByRole('textbox', {
+      name: /^Código de indicação/,
+    })
     await address.fill('0x123')
+    await referral.fill('X'.repeat(20))
     await primary.getByRole('button', { name: 'Salvar carteira' }).click()
     await expect(
       primary.getByText('Endereço 0x inválido (40 caracteres hexadecimais)'),
@@ -203,7 +207,11 @@ test.describe('Carteiras', () => {
     await expect(
       primary.getByText('Use letras, números ou hífen (mín. 3)'),
     ).toBeVisible() // ENS required (fixture has none)
+    await expect(primary.getByText('Máximo de 16 caracteres')).toBeVisible()
+    // Every message is in Portuguese: no Zod default (English) text leaks.
+    await expect(primary).not.toContainText(/expected|too big|invalid/i)
 
+    await referral.fill('KURIO2026')
     await address.fill('0xAbCdEf0123456789aBcDeF0123456789AbCdEf01')
     await primary.getByRole('textbox', { name: /^Nome ENS/ }).fill('brunocosta')
     await primary.getByLabel(/^Rede/).selectOption('polygon')
